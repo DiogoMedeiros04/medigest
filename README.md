@@ -44,26 +44,6 @@
 
 ---
 
-## 🚀 Como correr localmente
-
-1. Clonar o projeto:
-
-```bash
-git clone https://github.com/DiogoMedeiros04/medigest.git
-```
-
-2. Abrir no VS Code ou outro editor
-
-3. Servir com uma live server ou abrir `index.html`
-
-4. Configurar Supabase:
-
-   * Adicionar as variáveis no `supabaseClient.js`
-   * Garantir que as tabelas estão criadas:
-
-     * `profiles`, `medications`, `prescriptions`, `confirmations`
-
----
 
 ## 🛠️ A melhorar futuramente
 
