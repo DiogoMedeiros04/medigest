@@ -39,7 +39,7 @@
 
 * Upload de imagem de perfil localmente (sem bucket)
 * Notificações locais no login
-* Design temático (verde)
+* Design responsivo e apelativo 
 * Todos os ecrãs estilizados com Bootstrap
 
 ---
