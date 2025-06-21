@@ -1,4 +1,4 @@
-// js/admin-paciente.js (versão atualizada com estilo Bootstrap)
+// js/admin-paciente.js 
 
 import { supabase } from './supabaseClient.js'
 
@@ -17,7 +17,7 @@ async function carregarMedicamentosParaPrescrever() {
     return
   }
 
-  // Buscar medicamentos do admin
+  // busca medicamnetos criados pelo admin
   const { data: meds, error: medError } = await supabase
     .from('medications')
     .select('*')
@@ -28,7 +28,7 @@ async function carregarMedicamentosParaPrescrever() {
     return
   }
 
-  // Buscar prescrições existentes para este paciente
+  // buscar prescricoes existentes para este paciente
   const { data: prescricoes, error: prescError } = await supabase
     .from('prescriptions')
     .select('medication_id')
@@ -56,7 +56,7 @@ async function carregarMedicamentosParaPrescrever() {
     const btn = document.createElement('button')
 
     if (medicamentosPrescritos.has(med.id)) {
-      btn.textContent = '🗑️ Remover Prescrição'
+      btn.textContent = '🗑️ Remover Prescrição 🗑️'
       btn.className = 'btn btn-outline-danger mt-2'
       btn.addEventListener('click', async () => {
         const confirmar = confirm(`Remover prescrição de ${med.name}?`)

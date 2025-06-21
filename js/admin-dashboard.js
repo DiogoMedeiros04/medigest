@@ -17,13 +17,15 @@ async function getAdminId() {
 }
 
 // === CRIAR/EDITAR MEDICAMENTO ===
+
+
 if (form) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault()
     status.innerText = ''
     const adminId = await getAdminId()
     if (!adminId) {
-      alert("Sessão inválida. Faz login novamente.")
+      alert("Sessao falhada. Tenta outra vez")
       return
     }
 
@@ -58,7 +60,7 @@ if (form) {
         return
       }
 
-      status.textContent = 'Medicamento criado com sucesso!'
+      status.textContent = 'Medicamento criado!'
       form.reset()
     }
 
@@ -103,14 +105,14 @@ async function carregarMedicamentosDoAdmin() {
     `
 
     const btnEditar = document.createElement('button')
-    btnEditar.textContent = '✏️ Editar'
+    btnEditar.textContent = '✏️ Editar ✏️'
     btnEditar.style.marginRight = '10px'
     btnEditar.addEventListener('click', () => preencherFormulario(med))
 
     const btnApagar = document.createElement('button')
-    btnApagar.textContent = '🗑️ Apagar'
+    btnApagar.textContent = '🗑️ Apagar 🗑️'
     btnApagar.addEventListener('click', async () => {
-      const confirmar = confirm(`⚠️ Isto irá remover o medicamento e todas as prescrições e confirmações associadas. Continuar?`)
+      const confirmar = confirm(`⚠️ Isto irá remover o medicamento e todas as prescrições e confirmações associadas. Continuar?⚠️`)
       if (!confirmar) return
 
       await supabase.from('confirmations').delete().eq('medication_id', med.id)
@@ -120,7 +122,7 @@ async function carregarMedicamentosDoAdmin() {
       if (error) {
         alert('Erro ao apagar: ' + error.message)
       } else {
-        alert('✅ Medicamento apagado com sucesso.')
+        alert(' Medicamento apagado com sucesso.')
         carregarMedicamentosDoAdmin()
       }
     })
@@ -131,7 +133,9 @@ async function carregarMedicamentosDoAdmin() {
   })
 }
 
-// === ASSOCIAR PACIENTE AO ADMIN ===
+// === ASSOCIAR PACIENTE AO ADMIN  COM CODIGO ===
+
+
 if (associarBtn) {
   associarBtn.addEventListener('click', async () => {
     const pacienteId = pacienteIdInput.value.trim()
@@ -139,7 +143,7 @@ if (associarBtn) {
 
     associarStatus.textContent = ''
     if (!pacienteId || !adminId) {
-      associarStatus.textContent = 'Erro: código inválido ou sessão expirada.'
+      associarStatus.textContent = 'Erro: código errado ou sessão expirada'
       return
     }
 
@@ -164,13 +168,14 @@ if (associarBtn) {
       return
     }
 
-    associarStatus.textContent = '✅ Paciente associado com sucesso!'
+    associarStatus.textContent = '✅ Paciente associado com sucesso! ✅'
     pacienteIdInput.value = ''
     await loadPacientesAssociados()
   })
 }
 
-// === LISTAR PACIENTES ASSOCIADOS COM NOTAS ===
+// === LISTA DE  PACIENTES ASSOCIADOS COM NOTAS ===
+
 async function loadPacientesAssociados() {
   const adminId = await getAdminId()
   if (!adminId) {
@@ -220,12 +225,12 @@ async function loadPacientesAssociados() {
       if (error) {
         alert('Erro ao guardar nota: ' + error.message)
       } else {
-        alert('✅ Nota guardada!')
+        alert('✅ Nota guardada! ✅')
       }
     })
   })
 }
 
-// === INICIALIZAÇÕES ===
+// === init ===
 carregarMedicamentosDoAdmin()
 loadPacientesAssociados()

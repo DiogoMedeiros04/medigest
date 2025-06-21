@@ -6,7 +6,7 @@ const historicoContainer = document.getElementById('historico-container')
 
 let userId = null
 
-// === Permissão e Notificação diária ===
+// === perm e notificacao ===
 document.addEventListener('DOMContentLoaded', async () => {
   const permitido = await pedirPermissaoNotificacoes()
 
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       icon: 'icons/icon-192x192.png'
     })
 
-    agendarNotificacaoDiaria(9, 0) // Agendar para 9h00 da manhã
+    agendarNotificacaoDiaria(9, 0) 
   }
 
   userId = await getUserId()
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 })
 
-// === Agendar notificação para hora fixa ===
+
 function agendarNotificacaoDiaria(hora = 9, minuto = 0) {
   const agora = new Date()
   const proxima = new Date()
@@ -41,26 +41,26 @@ function agendarNotificacaoDiaria(hora = 9, minuto = 0) {
   setTimeout(() => {
     mostrarNotificacao('Hora da medicação 💊', {
       body: 'Confirma os medicamentos de hoje!',
-      icon: 'icons/icon-192x192.png'
+      icon: 'icons/icon-512x512.png'
     })
 
-    // Repetir todos os dias
+    
     setInterval(() => {
       mostrarNotificacao('Hora da medicação 💊', {
         body: 'Confirma os medicamentos de hoje!',
-        icon: 'icons/icon-192x192.png'
+        icon: 'icons/icon-512x512.png'
       })
     }, 24 * 60 * 60 * 1000)
   }, delay)
 }
 
-// === Utilitário ===
+
 async function getUserId() {
   const { data: { session } } = await supabase.auth.getSession()
   return session?.user?.id || null
 }
 
-// === Carregar medicamentos ativos ===
+// === medicamentos on 
 async function carregarMedicamentosPrescritos() {
   if (!medicamentosContainer) return
   medicamentosContainer.innerHTML = ''
@@ -96,7 +96,7 @@ async function carregarMedicamentosPrescritos() {
   })
 }
 
-// === Confirmar toma de medicamento ===
+// ===confirmar
 async function confirmarMedicamento(prescriptionId) {
   const { error } = await supabase.from('confirmations').insert([
     {
@@ -114,7 +114,7 @@ async function confirmarMedicamento(prescriptionId) {
   }
 }
 
-// === Histórico de confirmações ===
+// historico
 async function carregarHistoricoConfirmacoes() {
   if (!historicoContainer) return
   historicoContainer.innerHTML = ''

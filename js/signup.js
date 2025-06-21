@@ -9,7 +9,7 @@ form.addEventListener('submit', async (e) => {
   const password = document.getElementById('password').value
   const role = document.getElementById('role').value
 
-  // Registo no Supabase Auth
+  // register supabse
   const { data, error } = await supabase.auth.signUp({
     email,
     password
@@ -23,7 +23,7 @@ form.addEventListener('submit', async (e) => {
   const user = data.user
   const userId = user?.id || data?.session?.user?.id
 
-  // Guardar no perfil (sem admin_code agora)
+  // guardar no perfil //antigo ig
   const { error: profileError } = await supabase.from('profiles').insert([
     {
       user_id: userId,

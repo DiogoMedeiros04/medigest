@@ -1,3 +1,3 @@
 import { supabase } from './js/supabaseClient.js'
 
-console.log("Ligação Supabase iniciada!", supabase)
+console.log("Ligação  iniciada!", supabase)

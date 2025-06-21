@@ -8,7 +8,7 @@ const status = document.getElementById('status')
 
 let avatarPublicUrl = null
 
-// Mostrar preview da imagem
+// avatar preview
 avatarFile.addEventListener('change', () => {
   const file = avatarFile.files[0]
   if (file) {
@@ -17,7 +17,7 @@ avatarFile.addEventListener('change', () => {
   }
 })
 
-// Submeter formulário
+// submiting
 form.addEventListener('submit', async (e) => {
   e.preventDefault()
   status.textContent = ''
@@ -29,7 +29,7 @@ form.addEventListener('submit', async (e) => {
     return
   }
 
-  // Fazer upload da imagem
+  //  upload da imagem
   if (avatarFile.files.length > 0) {
     const file = avatarFile.files[0]
     const fileName = `${userId}-${Date.now()}`
@@ -39,7 +39,7 @@ form.addEventListener('submit', async (e) => {
       .upload(fileName, file, { upsert: true })
 
     if (uploadError) {
-      status.innerHTML = `<div class="alert alert-danger">Erro ao subir imagem: ${uploadError.message}</div>`
+      status.innerHTML = `<div class="alert alert-danger">Erro ao upload imagem: ${uploadError.message}</div>`
       return
     }
 
