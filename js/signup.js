@@ -7,13 +7,15 @@ form.addEventListener('submit', async (e) => {
 
   const email = document.getElementById('email').value
   const password = document.getElementById('password').value
-  const role = document.getElementById('role').value
+  const roleInput = document.querySelector('input[name="role"]:checked')
+  const role = roleInput ? roleInput.value : null
 
-  // register supabse
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password
-  })
+  if (!role) {
+    alert('Por favor, seleciona o tipo de utilizador.')
+    return
+  }
+
+  const { data, error } = await supabase.auth.signUp({ email, password })
 
   if (error) {
     alert('Erro no registo: ' + error.message)
@@ -23,12 +25,8 @@ form.addEventListener('submit', async (e) => {
   const user = data.user
   const userId = user?.id || data?.session?.user?.id
 
-  // guardar no perfil //antigo ig
   const { error: profileError } = await supabase.from('profiles').insert([
-    {
-      user_id: userId,
-      role
-    }
+    { user_id: userId, role }
   ])
 
   if (profileError) {
