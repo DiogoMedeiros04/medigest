@@ -1,8 +1,9 @@
-// js/admin-paciente.js 
+// js/admin-paciente.js
 
 import { supabase } from './supabaseClient.js'
 
 const container = document.getElementById('prescricao-container')
+const historicoContainer = document.getElementById('historico-container')
 const pacienteId = new URLSearchParams(window.location.search).get('paciente_id')
 
 async function getAdminId() {
@@ -17,7 +18,6 @@ async function carregarMedicamentosParaPrescrever() {
     return
   }
 
-  // busca medicamnetos criados pelo admin
   const { data: meds, error: medError } = await supabase
     .from('medications')
     .select('*')
@@ -28,7 +28,6 @@ async function carregarMedicamentosParaPrescrever() {
     return
   }
 
-  // buscar prescricoes existentes para este paciente
   const { data: prescricoes, error: prescError } = await supabase
     .from('prescriptions')
     .select('medication_id')
@@ -41,8 +40,7 @@ async function carregarMedicamentosParaPrescrever() {
 
   const medicamentosPrescritos = new Set(prescricoes.map(p => p.medication_id))
 
-  container.innerHTML = '<h4 class="text-success mb-4">Prescrever ou Remover Medicamentos</h4>'
-
+  container.innerHTML = ''
   meds.forEach(med => {
     const div = document.createElement('div')
     div.className = 'card mb-3 p-3 shadow-sm'
@@ -73,6 +71,7 @@ async function carregarMedicamentosParaPrescrever() {
         } else {
           alert('✅ Prescrição removida!')
           carregarMedicamentosParaPrescrever()
+          carregarHistoricoConfirmacoes()
         }
       })
     } else {
@@ -88,6 +87,7 @@ async function carregarMedicamentosParaPrescrever() {
         } else {
           alert('✅ Prescrição realizada!')
           carregarMedicamentosParaPrescrever()
+          carregarHistoricoConfirmacoes()
         }
       })
     }
@@ -97,4 +97,36 @@ async function carregarMedicamentosParaPrescrever() {
   })
 }
 
+async function carregarHistoricoConfirmacoes() {
+  historicoContainer.innerHTML = '<p class="text-muted">A carregar histórico...</p>'
+
+  const { data, error } = await supabase
+    .from('confirmations')
+    .select('confirmed_at, prescriptions(id, medications(name))')
+    .eq('patient_id', pacienteId)
+    .order('confirmed_at', { ascending: false })
+
+  if (error || !data || data.length === 0) {
+    historicoContainer.innerHTML = '<p class="text-muted">Nenhuma confirmação encontrada.</p>'
+    return
+  }
+
+  const lista = document.createElement('ul')
+  lista.className = 'list-group'
+
+  data.forEach(item => {
+    const medicamento = item.prescriptions?.medications?.name || 'Desconhecido'
+    const dataFormatada = new Date(item.confirmed_at).toLocaleString('pt-PT')
+    const li = document.createElement('li')
+    li.className = 'list-group-item'
+    li.textContent = `✅ ${medicamento} - ${dataFormatada}`
+    lista.appendChild(li)
+  })
+
+  historicoContainer.innerHTML = ''
+  historicoContainer.appendChild(lista)
+}
+
+// Inicialização
 carregarMedicamentosParaPrescrever()
+carregarHistoricoConfirmacoes()
